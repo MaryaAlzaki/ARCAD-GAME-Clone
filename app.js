@@ -1,31 +1,40 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
      this.sprite = 'images/enemy-bug.png';
-this.x = 100;
-this.y = 100;
+
+     this.x = x;
+     this.y = y;
 
 
     // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-   
-
+    // a helper we've provided to easily load images 
 };
-
+Enemy.prototype.getDimension= function(){
+    var img = 'images/enemy-bug.png';
+    var enemyHeight=img.height;
+    var enemyWidth=img.width;
+    console.log(enemyHeight);
+}
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-   
-this.x += (30*dt);
-    
-    
+   if(this.x<505){
+     this.x+= (350*dt);
+   }
+   else
+   {
+    this.x=-200;
+   }
+
+ 
+
 
 };
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -37,15 +46,33 @@ Enemy.prototype.render = function() {
 var Player=function(){
 
     this.sprite = 'images/char-pink-girl.png';
+    this.x=200;
+    this.y=400;
 };
+
 Player.prototype.update=function(){
+if(this.y<0)
+    alert("hi");
+
 
 };
 Player.prototype.render = function(){
-    //   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
  
 };
-Player.prototype.handleInput = function(){
+Player.prototype.handleInput = function(event){
+    if (event == 'left' && this.x >0){
+        this.x-=50;
+    } else 
+    if (event == 'right' && this.x < 400){
+        this.x+=50;
+    } else
+     if(event == 'up' && this.y > 0 ){
+        this.y-=20;
+    } else 
+    if(event == 'down' && this.y < 400 ){
+        this.y+=20;
+    }
  
 };
 
@@ -54,19 +81,13 @@ Player.prototype.handleInput = function(){
 // Place the player object in a variable called player
 
 var player = new Player();
-var allEnemies = [];
-var e1=new Enemy();
-allEnemies[0]=e1;
-var e2=new Enemy();
-e2.x=200;
-e2.y=200;
-allEnemies[1]=e2;
-var e3=new Enemy();
-e3.x=50;
-e3.y=50;
-allEnemies[2]=e3;
-
-
+var enemy1 = new Enemy(-90,60);
+var enemy2 = new Enemy(-200,140);
+var enemy3 = new Enemy(-500,140);
+var enemy4 = new Enemy(-800,220);
+var enemy5 = new Enemy(-1000,220);
+enemy5.getDimension();
+var allEnemies = [enemy1, enemy2,enemy3,enemy4,enemy5];
 
 
 // This listens for key presses and sends the keys to your
@@ -81,3 +102,4 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
